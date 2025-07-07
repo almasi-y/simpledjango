@@ -1,0 +1,126 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+       
+    </style>
+</head>
+<body>
+    <div>
+        <div >
+            <h1>Sign Up</h1>
+            <p>Create your account to get started</p>
+        </div>
+
+        <!-- Django Messages -->
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="message {{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            
+            <div >
+                <label for="username">Username</label>
+                <input 
+                    type="text" 
+                    id="username" 
+                    name="username" 
+                    placeholder="Enter your username"
+                    required
+                    minlength="3"
+                    maxlength="30"
+                >
+            </div>
+
+            <div >
+                <label for="email">Email Address</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    placeholder="Enter your email"
+                    required
+                >
+            </div>
+
+            <div >
+                <label for="password">Password</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    placeholder="Create a password"
+                    required
+                    minlength="8"
+                >
+                <div >
+                    Password must be at least 8 characters long
+                </div>
+            </div>
+
+            <div >
+                <label for="password2">Confirm Password</label>
+                <input 
+                    type="password" 
+                    id="password2" 
+                    name="password2" 
+                    placeholder="Confirm your password"
+                    required
+                    minlength="8"
+                >
+            </div>
+
+            <button type="submit" class="signup-btn">
+                Create Account
+            </button>
+        </form>
+
+        <div class="signin-link">
+            <p>Already have an account? <a href="{% url 'signin' %}">Sign In</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Simple client-side password confirmation
+        document.getElementById('password2').addEventListener('input', function() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = this.value;
+            
+            if (password !== confirmPassword) {
+                this.setCustomValidity('Passwords do not match');
+            } else {
+                this.setCustomValidity('');
+            }
+        });
+
+        // Real-time password validation
+        document.getElementById('password').addEventListener('input', function() {
+            const password = this.value;
+            const confirmPassword = document.getElementById('password2').value;
+            
+            if (confirmPassword && password !== confirmPassword) {
+                document.getElementById('password2').setCustomValidity('Passwords do not match');
+            } else {
+                document.getElementById('password2').setCustomValidity('');
+            }
+        });
+    </script>
+</body>
+</html>

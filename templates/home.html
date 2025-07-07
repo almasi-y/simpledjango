@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset = "utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Simple Django App</title>
+</head>
+
+<body>
+
+{% comment %} <a href="{% url 'signin' %}">Sign In</a> {% endcomment %}
+
+<hr>
+<a href="{% url 'signup' %}">Sign Up</a>
+<div>
+    {% for profile in profiles %}
+            {% comment %} <a href="{% url 'update-profile' user_model.id %}">Edit</a>
+            <a href="{% url 'delete-profile' user_model.id %}">Delete</a> {% endcomment %}
+            <span>@{{profile.user.username }}</span>
+            <h5>{{ profile.user.id }} -- <a href="{% url 'profile' pk=profile.user.id %}">{{ profile.user.username }}</a></h5>      
+        <hr>
+    {% endfor %}
+ </div>
+
+            
+            
