@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Panel - User Management System{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>
+                    <i class="fas fa-cog"></i> Admin Panel
+                </h2>
+                <div>
+                    <span class="badge bg-secondary">Admin Access</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="card-title">{{ total_users }}</h4>
+                            <p class="card-text">Total Users</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-users fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card text-white bg-success">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="card-title">{{ verified_users }}</h4>
+                            <p class="card-text">Verified Users</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-check-circle fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card text-white bg-warning">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="card-title">{{ admin_users }}</h4>
+                            <p class="card-text">Admin Users</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-user-shield fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card text-white bg-info">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4 class="card-title">{{ total_users|add:"-1" }}</h4>
+                            <p class="card-text">Regular Users</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-user fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Users Table -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-table"></i> All Users
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Username</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>User Type</th>
+                                    <th>Verified</th>
+                                    <th>Active</th>
+                                    <th>Joined</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user_obj in users %}
+                                <tr>
+                                    <td>{{ user_obj.id }}</td>
+                                    <td>
+                                        <strong>{{ user_obj.username }}</strong>
+                                        {% if user_obj.id == user.id %}
+                                            <span class="badge bg-primary">You</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ user_obj.userprofile.full_name|default:"-" }}</td>
+                                    <td>{{ user_obj.email }}</td>
+                                    <td>
+                                        <span class="badge bg-{% if user_obj.userprofile.user_type == 'admin' %}danger{% else %}secondary{% endif %}">
+                                            {{ user_obj.userprofile.get_user_type_display }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        {% if user_obj.userprofile.is_verified %}
+                                            <span class="badge bg-success">
+                                                <i class="fas fa-check"></i> Yes
+                                            </span>
+                                        {% else %}
+                                            <span class="badge bg-warning">
+                                                <i class="fas fa-times"></i> No
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if user_obj.is_active %}
+                                            <span class="badge bg-success">
+                                                <i class="fas fa-check"></i> Yes
+                                            </span>
+                                        {% else %}
+                                            <span class="badge bg-danger">
+                                                <i class="fas fa-times"></i> No
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ user_obj.date_joined|date:"M d, Y" }}</td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <a href="{% url 'accounts:admin_user_edit' user_obj.id %}" class="btn btn-outline-primary btn-sm">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            {% if user_obj.id != user.id %}
+                                                <a href="{% url 'accounts:admin_user_delete' user_obj.id %}" class="btn btn-outline-danger btn-sm">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="9" class="text-center">No users found.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
