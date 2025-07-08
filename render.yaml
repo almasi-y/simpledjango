@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: user-management-app
+    runtime: python
+    buildCommand: ""
+    startCommand: gunicorn user_management.wsgi:application
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: user_management.settings
+      - key: SECRET_KEY
+        value: django-insecure-zip^$otr#cxn%+ve2w(m1dd=*%e&pilmebrut(n87#yi55oqry
+      - key: ALLOWED_HOSTS
+        value: simpledjango.onrender.com
