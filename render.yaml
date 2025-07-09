@@ -10,4 +10,4 @@ services:
       - key: SECRET_KEY
         value: django-insecure-zip^$otr#cxn%+ve2w(m1dd=*%e&pilmebrut(n87#yi55oqry
       - key: ALLOWED_HOSTS
-        value: simpledjango.onrender.com
+        value: user_management.onrender.com
