@@ -18,4 +18,7 @@ urlpatterns = [
     path('admin-panel/', views.admin_panel, name='admin_panel'),
     path('admin/user/<int:user_id>/edit/', views.admin_user_edit, name='admin_user_edit'),
     path('admin/user/<int:user_id>/delete/', views.admin_user_delete, name='admin_user_delete'),
+    
+    # Development/Testing URLs
+    path('test-verification/', views.verification_test, name='verification_test'),
 ]

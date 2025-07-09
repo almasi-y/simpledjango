@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from django.urls import reverse
 from django.http import HttpResponseForbidden
+from django.conf import settings
 from .models import UserProfile
 from .forms import CustomUserCreationForm, UserProfileForm, AdminUserEditForm
 import uuid
@@ -193,21 +194,34 @@ def admin_user_delete(request, user_id):
 def send_verification_email(user):
     """Send verification email (mock implementation)"""
     token = user.userprofile.verification_token
-    verification_url = f"http://localhost:8000/accounts/verify/{token}/"
+    
+    # Use Django's reverse to generate the URL properly
+    verification_path = reverse('accounts:verify_email', kwargs={'token': token})
+    verification_url = f"http://localhost:8080{verification_path}"
     
     subject = 'Verify your email address'
-    message = f"""
-    Hi {user.first_name or user.username},
-    
-    Thank you for registering! Please click the link below to verify your email address:
-    {verification_url}
-    
-    If you didn't create this account, please ignore this email.
-    
-    Best regards,
-    User Management Team
-    """
+    message = f"""Hi {user.first_name or user.username},
+
+Thank you for registering! Please click the link below to verify your email address:
+{verification_url}
+
+If you didn't create this account, please ignore this email.
+
+Best regards,
+User Management Team"""
     
     # In development, this will print to console
-    print(f"Verification email sent to {user.email}")
-    print(f"Verification URL: {verification_url}")
+    print("=" * 80)
+    print(f"VERIFICATION EMAIL SENT TO: {user.email}")
+    print(f"VERIFICATION URL: {verification_url}")
+    print(f"TOKEN: {token}")
+    print("=" * 80)
+
+
+def verification_test(request):
+    """Test page for verification links (development only)"""
+    if not settings.DEBUG:
+        return HttpResponseForbidden("This page is only available in DEBUG mode")
+    
+    users = User.objects.all().select_related('userprofile')
+    return render(request, 'accounts/verification_test.html', {'users': users})

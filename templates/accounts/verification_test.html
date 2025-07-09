@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Verification Test - User Management System{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-tools"></i> Verification Testing Tool
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <p>Use this tool to test verification links:</p>
+                    
+                    <div class="alert alert-info">
+                        <strong>Current Users and Verification Links:</strong>
+                    </div>
+                    
+                    {% for user in users %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h6>{{ user.username }} ({{ user.email }})</h6>
+                            <p class="mb-1">
+                                <strong>Status:</strong> 
+                                {% if user.userprofile.is_verified %}
+                                    <span class="badge bg-success">Verified</span>
+                                {% else %}
+                                    <span class="badge bg-warning">Not Verified</span>
+                                {% endif %}
+                            </p>
+                            <p class="mb-1"><strong>Token:</strong> <code>{{ user.userprofile.verification_token }}</code></p>
+                            <p class="mb-1">
+                                <strong>Verification URL:</strong><br>
+                                <a href="/verify/{{ user.userprofile.verification_token }}/" 
+                                   class="btn btn-sm btn-primary" target="_blank">
+                                    Verify {{ user.username }}
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
