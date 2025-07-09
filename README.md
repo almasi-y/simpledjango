@@ -53,7 +53,7 @@ To start the development server, run:
 ```bash
 python manage.py runserver
 ```
-Open your browser and visit [http://127.0.0.1:8001/](http://127.0.0.1:8001/) to view the app.
+Open your browser and visit [simpledjango](https://simpledjango.onrender.com) to view the app.
 
 ---
 
