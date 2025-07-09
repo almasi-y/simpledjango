@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-zip^$otr#cxn%+ve2w(m1dd=*%e&pilmebrut(n87#yi55oqry
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['simpledjango.onrender.com']
 
 
 # Application definition
